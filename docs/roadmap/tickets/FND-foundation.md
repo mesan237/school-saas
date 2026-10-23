@@ -52,5 +52,5 @@ Not added: frontend unit test for `translate()` (no JS test runner configured ye
 
 ## Open decisions for the product owner
 
-1. **FND-012 accepted risk:** dev-only npm advisories reported, not blocking, until `vite-plus` can be upgraded.
-2. **Locale on logout:** it currently resets to French because logout invalidates the session. Proposal: store the language on the user in a later ticket.
+1. **FND-012 accepted risk:** APPROVED by PO 2026-10-23 (dev-only advisories reported, not blocking).
+2. **Locale on logout:** decided by PO 2026-10-23: users keep their own language. Implemented in FND-013.
