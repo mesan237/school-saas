@@ -7,31 +7,32 @@ Areas: FND foundation · TEN tenancy · AUTH auth · ACA academics · STU studen
 
 A demo build on **fake data** for prospecting. It is not a real-data pilot (see discovery report §15).
 
-| ID      | Title                                                                                    | Labels               | Status                                  |
-| ------- | ---------------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
-| FND-001 | Repository bootstrap                                                                     | routine              | done (local; GitHub remote pending)     |
-| FND-002 | Laravel scaffold + app config (fr locale, name)                                          | routine              | done                                    |
-| FND-003 | Module skeleton + architecture tests (Pest)                                              | routine              | done                                    |
-| FND-004 | PHP quality tooling (Pint, Larastan, Pest)                                               | routine              | done                                    |
-| FND-005 | Frontend quality tooling                                                                 | routine              | done (shipped by starter kit, verified) |
-| FND-006 | i18n foundation (fr/en)                                                                  | routine              | done                                    |
-| FND-007 | CI on GitHub Actions with PostgreSQL                                                     | routine              | in review (PR)                          |
-| FND-008 | Claude Code control system                                                               | routine              | done                                    |
-| FND-009 | Core documentation + ADRs                                                                | routine              | done                                    |
-| FND-010 | Local PostgreSQL (Docker/Sail or native) + switch tests to Postgres                      | routine              | blocked: environment                    |
-| FND-011 | Translate remaining starter-kit pages (register, reset, settings, dashboard) to French   | routine              | ready                                   |
-| FND-012 | Upgrade vite-plus dev toolchain (dev-only critical advisories; accepted risk until then) | routine              | blocked: upstream peer conflict         |
-| TEN-001 | Schools, sections, cycles, memberships, fixed roles                                      | sensitive, high-risk | ready (needs FND-010)                   |
-| TEN-002 | Tenant context middleware, `BelongsToSchool`, composite FKs, cross-tenant tests          | sensitive, high-risk | —                                       |
-| TEN-003 | Platform admin creates school + invites owner; disable public registration               | sensitive            | —                                       |
-| ACA-001 | Academic years, levels, classes, subjects                                                | routine              | —                                       |
-| STU-001 | Students, guardians, enrollment history                                                  | sensitive            | —                                       |
-| STU-002 | CSV/Excel import                                                                         | sensitive            | —                                       |
-| FIN-001 | Fee types, schedules, instalments                                                        | sensitive            | —                                       |
-| FIN-002 | Charges, payments, allocation, receipts, voids                                           | sensitive, high-risk | —                                       |
-| FIN-003 | Balances + arrears report by class and instalment                                        | sensitive            | —                                       |
-| COM-001 | Arrears reminder preview (fake SMS driver)                                               | sensitive            | —                                       |
-| OPS-001 | Bilingual demo seeder + demo walkthrough script                                          | routine              | —                                       |
+| ID      | Title                                                                                    | Labels               | Status                                                |
+| ------- | ---------------------------------------------------------------------------------------- | -------------------- | ----------------------------------------------------- |
+| FND-001 | Repository bootstrap                                                                     | routine              | done (local; GitHub remote pending)                   |
+| FND-002 | Laravel scaffold + app config (fr locale, name)                                          | routine              | done                                                  |
+| FND-003 | Module skeleton + architecture tests (Pest)                                              | routine              | done                                                  |
+| FND-004 | PHP quality tooling (Pint, Larastan, Pest)                                               | routine              | done                                                  |
+| FND-005 | Frontend quality tooling                                                                 | routine              | done (shipped by starter kit, verified)               |
+| FND-006 | i18n foundation (fr/en)                                                                  | routine              | done                                                  |
+| FND-007 | CI on GitHub Actions with PostgreSQL                                                     | routine              | in review (PR)                                        |
+| FND-008 | Claude Code control system                                                               | routine              | done                                                  |
+| FND-009 | Core documentation + ADRs                                                                | routine              | done                                                  |
+| FND-010 | Local PostgreSQL (Docker/Sail or native) + switch tests to Postgres                      | routine              | blocked: environment                                  |
+| FND-011 | Translate remaining starter-kit pages (register, reset, settings, dashboard) to French   | routine              | ready                                                 |
+| FND-012 | Upgrade vite-plus dev toolchain (dev-only critical advisories; accepted risk until then) | routine              | accepted risk (PO 2026-10-23); upgrade when unblocked |
+| FND-013 | Each user keeps their own language, including after logout                               | routine              | verified                                              |
+| TEN-001 | Schools, sections, cycles, memberships, fixed roles                                      | sensitive, high-risk | ready (needs FND-010)                                 |
+| TEN-002 | Tenant context middleware, `BelongsToSchool`, composite FKs, cross-tenant tests          | sensitive, high-risk | —                                                     |
+| TEN-003 | Platform admin creates school + invites owner; disable public registration               | sensitive            | —                                                     |
+| ACA-001 | Academic years, levels, classes, subjects                                                | routine              | —                                                     |
+| STU-001 | Students, guardians, enrollment history                                                  | sensitive            | —                                                     |
+| STU-002 | CSV/Excel import                                                                         | sensitive            | —                                                     |
+| FIN-001 | Fee types, schedules, instalments                                                        | sensitive            | —                                                     |
+| FIN-002 | Charges, payments, allocation, receipts, voids                                           | sensitive, high-risk | —                                                     |
+| FIN-003 | Balances + arrears report by class and instalment                                        | sensitive            | —                                                     |
+| COM-001 | Arrears reminder preview (fake SMS driver)                                               | sensitive            | —                                                     |
+| OPS-001 | Bilingual demo seeder + demo walkthrough script                                          | routine              | —                                                     |
 
 ## Before any real school data (post-demo, mandatory)
 
