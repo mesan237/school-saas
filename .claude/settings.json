@@ -1,41 +1,41 @@
 {
-  "permissions": {
-    "deny": [
-      "Read(./.env)",
-      "Read(./.env.backup)",
-      "Read(./.env.production)",
-      "Read(./.env.staging)",
-      "Edit(./.env)",
-      "Edit(./.env.backup)",
-      "Edit(./.env.production)",
-      "Edit(./.env.staging)",
-      "Bash(cat .env*)",
-      "Bash(git push --force*)",
-      "Bash(git push -f*)",
-      "Bash(git reset --hard*)",
-      "Bash(php artisan db:wipe*)",
-      "Bash(php artisan migrate:fresh --env=production*)"
-    ],
-    "ask": [
-      "Bash(git push*)",
-      "Bash(git merge*)",
-      "Edit(./.github/workflows/**)",
-      "Edit(./phpstan.neon)",
-      "Edit(./phpunit.xml)"
-    ]
-  },
-  "hooks": {
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "php \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.php\"",
-            "timeout": 60
-          }
+    "permissions": {
+        "deny": [
+            "Read(./.env)",
+            "Read(./.env.backup)",
+            "Read(./.env.production)",
+            "Read(./.env.staging)",
+            "Edit(./.env)",
+            "Edit(./.env.backup)",
+            "Edit(./.env.production)",
+            "Edit(./.env.staging)",
+            "Bash(cat .env*)",
+            "Bash(git push --force*)",
+            "Bash(git push -f*)",
+            "Bash(git reset --hard*)",
+            "Bash(php artisan db:wipe*)",
+            "Bash(php artisan migrate:fresh --env=production*)"
+        ],
+        "ask": [
+            "Bash(git push*)",
+            "Bash(git merge*)",
+            "Edit(./.github/workflows/**)",
+            "Edit(./phpstan.neon)",
+            "Edit(./phpunit.xml)"
         ]
-      }
-    ]
-  }
+    },
+    "hooks": {
+        "PostToolUse": [
+            {
+                "matcher": "Edit|Write",
+                "hooks": [
+                    {
+                        "type": "command",
+                        "command": "php \"$CLAUDE_PROJECT_DIR/.claude/hooks/format-file.php\"",
+                        "timeout": 60
+                    }
+                ]
+            }
+        ]
+    }
 }

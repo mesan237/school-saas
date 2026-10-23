@@ -26,7 +26,7 @@ $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
 
 $command = match (true) {
     $extension === 'php' => [$root.'/vendor/bin/pint'.($windows ? '.bat' : ''), '--quiet'],
-    in_array($extension, ['ts', 'tsx', 'js', 'jsx', 'css', 'json'], true) => [$root.'/node_modules/.bin/vp'.($windows ? '.cmd' : ''), 'fmt'],
+    in_array($extension, ['ts', 'tsx', 'js', 'jsx', 'css', 'json', 'md'], true) => [$root.'/node_modules/.bin/vp'.($windows ? '.cmd' : ''), 'fmt'],
     default => null,
 };
 

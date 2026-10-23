@@ -3,6 +3,7 @@
 This is the living version. Update it in the same PR as any migration that changes it.
 
 ## Entities (✓ = built; others planned for the demo sprint)
+
 ```
 User (GLOBAL: one login, may belong to several schools)
 School (tenant)
@@ -27,6 +28,7 @@ School (tenant)
 ```
 
 ## Invariants
+
 1. Tenant rows have `school_id NOT NULL`. A child's `school_id` equals its parent's (composite FK).
 2. At most one `active` academic year per school (partial unique index).
 3. At most one active enrollment per student per academic year. A class change closes the old enrollment and opens a new one.
@@ -37,4 +39,5 @@ School (tenant)
 8. Balance = charges − adjustments − allocations of non-voided payments. It is always derivable.
 
 ## Naming
+
 `SchoolClass`, because `class` is reserved in PHP. All money columns end in `_amount` and hold integer XAF.

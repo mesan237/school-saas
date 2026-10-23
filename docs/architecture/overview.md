@@ -13,18 +13,20 @@ Browser (React via Inertia) ──HTTP──▶ Laravel
 ```
 
 ## Modules (`app/Domain/<Module>`)
-| Module | Owns | May depend on |
-|---|---|---|
-| Tenancy | School, Section, Cycle, Membership, TenantContext | — |
-| Academics | AcademicYear, Level, SchoolClass, Subject | Tenancy |
-| Students | Student, Guardian, Enrollment, Import | Tenancy, Academics |
-| Finance | Fee schedules, Charges, Payments, Receipts | Tenancy, Academics, Students |
-| Communication | Messages, SMS driver | Tenancy, Students, Finance (read-only) |
-| Audit | AuditLog | — (used by all) |
+
+| Module        | Owns                                              | May depend on                          |
+| ------------- | ------------------------------------------------- | -------------------------------------- |
+| Tenancy       | School, Section, Cycle, Membership, TenantContext | —                                      |
+| Academics     | AcademicYear, Level, SchoolClass, Subject         | Tenancy                                |
+| Students      | Student, Guardian, Enrollment, Import             | Tenancy, Academics                     |
+| Finance       | Fee schedules, Charges, Payments, Receipts        | Tenancy, Academics, Students           |
+| Communication | Messages, SMS driver                              | Tenancy, Students, Finance (read-only) |
+| Audit         | AuditLog                                          | — (used by all)                        |
 
 Rules: dependencies point one way (enforced by architecture tests from FND-003). Cross-module calls go through Actions or models, never through another module's controllers.
 
 ## Conventions
+
 - Workflow = an Action class with one public `handle()` / `__invoke()`, wrapped in a DB transaction when it writes more than one row.
 - Validation in FormRequests; authorization in Policies, using the role map (ADR-0004).
 - Times stored in UTC and displayed in `Africa/Douala`. Money as integer XAF (ADR-0003).
