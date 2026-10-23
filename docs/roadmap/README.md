@@ -10,7 +10,7 @@ A demo build on **fake data** for prospecting. It is not a real-data pilot (see 
 | ID      | Title                                                                                    | Labels               | Status                                  |
 | ------- | ---------------------------------------------------------------------------------------- | -------------------- | --------------------------------------- |
 | FND-001 | Repository bootstrap                                                                     | routine              | done (local; GitHub remote pending)     |
-| FND-002 | Laravel scaffold + app config (fr locale, name, timezone)                                | routine              | done                                    |
+| FND-002 | Laravel scaffold + app config (fr locale, name)                                          | routine              | done                                    |
 | FND-003 | Module skeleton + architecture tests (Pest)                                              | routine              | done                                    |
 | FND-004 | PHP quality tooling (Pint, Larastan, Pest)                                               | routine              | done                                    |
 | FND-005 | Frontend quality tooling                                                                 | routine              | done (shipped by starter kit, verified) |

@@ -22,10 +22,15 @@ export function translate(
     key: string,
     replacements: Replacements = {},
 ): string {
-    const text = dictionaries[locale][key] ?? key;
+    // Optional chaining: an unexpected locale from the server must degrade to English, not crash the UI.
+    const text = dictionaries[locale]?.[key] ?? key;
 
-    return Object.entries(replacements).reduce(
-        (result, [name, value]) => result.replaceAll(`:${name}`, String(value)),
-        text,
-    );
+    // Longest placeholder first, as Laravel does, so ":name" cannot corrupt ":names".
+    return Object.entries(replacements)
+        .sort(([a], [b]) => b.length - a.length)
+        .reduce(
+            (result, [name, value]) =>
+                result.replaceAll(`:${name}`, String(value)),
+            text,
+        );
 }

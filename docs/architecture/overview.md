@@ -4,7 +4,7 @@ A modular monolith (ADR-0001). One Laravel app serves Inertia/React pages. Postg
 
 ```
 Browser (React via Inertia) ──HTTP──▶ Laravel
-                                       ├─ Middleware: auth → tenant context (membership) → locale
+                                       ├─ Middleware: session → locale → auth → tenant context (membership)
                                        ├─ Controllers (thin) → FormRequest (validate) → Policy (authorize)
                                        ├─ Domain Actions (workflows, transactions)
                                        ├─ Eloquent models (BelongsToSchool scope)
@@ -23,7 +23,7 @@ Browser (React via Inertia) ──HTTP──▶ Laravel
 | Communication | Messages, SMS driver                              | Tenancy, Students, Finance (read-only) |
 | Audit         | AuditLog                                          | — (used by all)                        |
 
-Rules: dependencies point one way (enforced by architecture tests from FND-003). Cross-module calls go through Actions or models, never through another module's controllers.
+Rules: dependencies point one way. An architecture rule per module is added in the ticket that creates that module (`tests/Arch`); none exist yet because `app/Domain` is still empty. Cross-module calls go through Actions or models, never through another module's controllers.
 
 ## Conventions
 

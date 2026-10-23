@@ -14,7 +14,7 @@
 
 - **Target: PostgreSQL.** Tenant isolation relies on Postgres features (composite FKs, partial unique indexes, RLS), and SQLite can't exercise them.
 - **Temporary (until local Postgres exists, see ADR-0005):** the starter kit's SQLite in-memory setup. On XAMPP PHP the driver must be loaded per command:
-  `php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/phpunit`
+  `php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/pest` (not `vendor/bin/phpunit`: it refuses to run Pest-style tests)
 - CI switches to Postgres in FND-007. Any test that needs Postgres-only features is marked so it can't silently pass on SQLite.
 
 ## Mandatory tests by change type
