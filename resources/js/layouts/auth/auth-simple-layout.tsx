@@ -1,15 +1,23 @@
 import { Link } from '@inertiajs/react';
 import AppLogoIcon from '@/components/app-logo-icon';
+import LocaleSwitcher from '@/components/locale-switcher';
+import { useTranslation } from '@/hooks/use-translation';
 import { home } from '@/routes';
 import type { AuthLayoutProps } from '@/types';
 
 export default function AuthSimpleLayout({
     children,
-    title,
-    description,
+    title: titleKey,
+    description: descriptionKey,
 }: AuthLayoutProps) {
+    // Pages pass English source text via Page.layout; it is translated here.
+    const { t } = useTranslation();
+    const title = titleKey ? t(titleKey) : '';
+    const description = descriptionKey ? t(descriptionKey) : '';
+
     return (
         <div className="flex min-h-svh flex-col items-center justify-center gap-6 bg-background p-6 md:p-10">
+            <LocaleSwitcher className="absolute top-4 right-4" />
             <div className="w-full max-w-sm">
                 <div className="flex flex-col gap-8">
                     <div className="flex flex-col items-center gap-4">
