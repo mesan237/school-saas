@@ -1,4 +1,4 @@
-name: tests
+name: ci
 
 on:
   push:
@@ -9,9 +9,39 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
 jobs:
-  ci:
+  checks:
+    name: lint, analyse, test (PostgreSQL), build
     runs-on: ubuntu-latest
+
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_DB: testing
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres # throwaway CI-only credentials
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+
+    # Real environment variables win over .env and phpunit.xml <env> defaults,
+    # so the whole job (migrations and tests) runs on PostgreSQL.
+    env:
+      DB_CONNECTION: pgsql
+      DB_HOST: 127.0.0.1
+      DB_PORT: 5432
+      DB_DATABASE: testing
+      DB_USERNAME: postgres
+      DB_PASSWORD: postgres
 
     steps:
       - name: Checkout code
@@ -22,7 +52,8 @@ jobs:
       - name: Setup PHP
         uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
         with:
-          php-version: '8.3'
+          php-version: '8.4'
+          extensions: pdo_pgsql, pgsql
           tools: composer:v2
           coverage: none
 
@@ -30,9 +61,78 @@ jobs:
         uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
         with:
           node-version: '22'
+          cache: npm
 
-      - name: Setup Application
-        run: composer setup
+      - name: Validate composer.json
+        run: composer validate --strict
 
-      - name: Run CI Checks
-        run: composer ci:check
+      - name: Install dependencies
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist
+          npm ci
+
+      - name: Prepare environment
+        run: |
+          cp .env.example .env
+          php artisan key:generate
+
+      - name: Show database in use
+        run: php artisan db:show
+
+      - name: Migrations apply, roll back and re-apply cleanly
+        run: |
+          php artisan migrate --force
+          php artisan migrate:rollback --force
+          php artisan migrate --force
+
+      - name: Build frontend
+        run: npm run build
+
+      - name: Frontend format, lint and types
+        run: |
+          npm run check
+          npm run types:check
+
+      - name: PHP format, static analysis and tests
+        run: composer test
+
+  security:
+    name: dependency and secret scanning
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 0 # gitleaks scans the full history
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # v2
+        with:
+          php-version: '8.4'
+          tools: composer:v2
+          coverage: none
+
+      - name: Setup Node
+        uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Composer audit (blocking)
+        run: composer audit --locked
+
+      - name: npm audit, production dependencies (blocking)
+        run: npm audit --omit=dev --audit-level=high
+
+      # Accepted risk FND-012: the starter kit's dev toolchain (vite-plus 0.3.0) pulls vulnerable
+      # dev-only packages; the upgrade is blocked by a peer conflict. Reported, not blocking.
+      - name: npm audit, dev dependencies (report only)
+        continue-on-error: true
+        run: npm audit --audit-level=high
+
+      - name: Secret scan
+        uses: gitleaks/gitleaks-action@e0c47f4f8be36e29cdc102c57e68cb5cbf0e8d1e # v3.0.0
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
