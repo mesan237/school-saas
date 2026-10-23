@@ -8,8 +8,9 @@ Stack: Laravel 13 · PHP 8.4 · Inertia 3 · React 19 · TypeScript · Tailwind 
 - `composer test` — Pint check + Larastan + test suite (run before claiming any PHP change works)
 - `composer lint` — auto-fix PHP formatting
 - `npm run check` — frontend format + lint; `npm run types:check` — TypeScript; `npm run build` — production build
-- `composer ci:check` — everything CI runs
-- Until local PostgreSQL exists (Windows/XAMPP): run tests with `php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/phpunit`
+- `composer ci:check` — the local subset of CI (CI also runs the build, a migration round-trip, audits and gitleaks)
+- **Until local PostgreSQL exists (Windows/XAMPP, see ADR-0005)**, `composer test` can't load a DB driver. Run instead:
+  `composer lint:check`, `composer types:check`, then `php -d extension=pdo_sqlite -d extension=sqlite3 vendor/bin/pest`
 
 ## Non-negotiable rules
 

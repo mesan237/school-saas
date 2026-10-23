@@ -13,11 +13,17 @@ if (! is_string($file) || ! is_file($file)) {
     exit(0);
 }
 
-$root = getenv('CLAUDE_PROJECT_DIR') ?: dirname(__DIR__, 2);
+$root = realpath(getenv('CLAUDE_PROJECT_DIR') ?: dirname(__DIR__, 2));
 $file = realpath($file);
 
-// Only format files inside the project, never vendor/node_modules.
-if ($file === false || ! str_starts_with($file, realpath($root)) || preg_match('#[\\\\/](vendor|node_modules)[\\\\/]#', $file)) {
+if ($root === false || $file === false) {
+    exit(0);
+}
+
+// Only format files inside the project (trailing separator: "school-saas-old" is not inside "school-saas"),
+// never vendor/node_modules.
+$root = rtrim($root, '\\/');
+if (! str_starts_with($file, $root.DIRECTORY_SEPARATOR) || preg_match('#[\\\\/](vendor|node_modules)[\\\\/]#', $file)) {
     exit(0);
 }
 

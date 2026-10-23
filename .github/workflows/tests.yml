@@ -99,6 +99,9 @@ jobs:
   security:
     name: dependency and secret scanning
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read # gitleaks-action lists PR commits on pull_request events
 
     steps:
       - name: Checkout code
